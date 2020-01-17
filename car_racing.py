@@ -97,7 +97,9 @@ def train(net, env, game_length, i, loss_list, gamma = 0.999):
 		action = np.asarray([single_action.item() for single_action in action])
 		
 		action[0] = (action[0] * 2) - 1 # stretch steering from 0 to 1   to   -1 to 1
-		if step % 100 == 0: print(action)
+		
+		if step % 100 == 0: print('steer, gas, brake values:', action)
+		
 		state, reward, done, _ = env.step(action)
 
 		done = done or step
@@ -124,7 +126,7 @@ def play(net, env, game_length):
   		value, action = net(torch.from_numpy(np.flip(state,axis=0).copy()).unsqueeze(0).transpose(1,3).float())
   		#print(np.asarray([single_action.item() for single_action in action]))
   		state, reward, done, info = env.step(np.asarray([single_action.item() for single_action in action]))		
-  		print(reward)
+  		print('reward:', reward)
   		if done:
   			state = env.reset()
 	env.close()
